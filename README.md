@@ -1,4 +1,4 @@
-# Exercise 02 - Containerization Technology
+# Containerization Technology
 
 ## Description
 This exercise demonstrates the implementation of containerized applications using Docker, featuring multiple reverse proxy configurations (Traefik, Nginx, and Apache) for a Go-based web service called Beetroot.
