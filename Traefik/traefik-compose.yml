@@ -1,0 +1,31 @@
+services:
+  app:
+    image: registry.internal.uia.no/ikt114-g-24v-it-orkestrering/labgroup21/exercise-02-containerization-technology:latest
+    volumes:
+      - ../.secretFile.txt:/tmp/.secretFile.txt
+    environment:
+      - HackerLeetC0d3=${MESSAGE}
+      - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.beetroot.rule=PathPrefix(`/`)"
+      - "traefik.http.services.beetroot.loadbalancer.server.port=${BEETROOT_PORT}"
+      - "traefik.http.middlewares.custom-header.headers.customResponseHeaders.Server=Traefik"
+      - "traefik.http.routers.beetroot.middlewares=custom-header@docker"
+    networks:
+      - webgateway
+
+  traefik:
+    image: traefik:latest
+    command:
+      - "--configFile=/etc/traefik/traefik.yaml"
+    ports:
+      - ${TRAEFIK_PUBLIC_PORT}:${TRAEFIK_INTERNAL_PORT}
+    volumes:
+      - "./traefik.yaml:/etc/traefik/traefik.yaml"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - webgateway
+
+networks:
+  webgateway:

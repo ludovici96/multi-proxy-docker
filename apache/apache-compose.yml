@@ -1,0 +1,27 @@
+services:
+  beetroot:
+    image: registry.internal.uia.no/ikt114-g-24v-it-orkestrering/labgroup21/exercise-02-containerization-technology
+    volumes:
+      - ../.secretFile.txt:/tmp/.secretFile.txt
+    environment:
+      - PORT=${CONTAINER_PORT}
+      - HackerLeetC0d3=${MESSAGE}
+      - TZ=${TZ}
+    ports:
+      - ${BEETROOT_PORT}
+    networks:
+      - apache_network
+
+  apache:
+    image: httpd:latest
+    ports:
+      - ${APACHE_PUBLIC_PORT}:${APACHE_INTERNAL_PORT}
+    volumes:
+      - ./httpd.conf:/usr/local/apache2/conf/httpd.conf
+    depends_on:
+      - beetroot
+    networks:
+      - apache_network
+
+networks:
+  apache_network:
