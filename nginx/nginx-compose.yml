@@ -1,0 +1,26 @@
+services:
+  beetroot:
+    image: registry.internal.uia.no/ikt114-g-24v-it-orkestrering/labgroup21/exercise-02-containerization-technology:latest
+    volumes:
+      - ../.secretFile.txt:/tmp/.secretFile.txt
+    environment:
+      - HackerLeetC0d3=${MESSAGE}
+      - TZ=${TZ}
+    ports:
+      - ${BEETROOT_PORT}
+    networks:
+      - nginx_network
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - ${NGINX_PUBLIC_PORT}:${NGINX_INTERNAL_PORT}
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - beetroot
+    networks:
+      - nginx_network
+
+networks:
+  nginx_network:

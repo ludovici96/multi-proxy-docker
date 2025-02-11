@@ -1,0 +1,11 @@
+services:
+  app:
+    image: [registry link]
+    volumes:
+      - ./.secretFile.txt:/tmp/.secretFile.txt
+    environment:
+      - PORT=${CONTAINER_PORT}
+      - HackerLeetC0d3=${MESSAGE}
+      - TZ=${TZ}
+    ports:
+      - ${HOST_PORT}:${CONTAINER_PORT}

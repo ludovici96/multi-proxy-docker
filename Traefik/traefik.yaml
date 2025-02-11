@@ -1,0 +1,15 @@
+entryPoints:
+  web:
+    address: ":80"
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+
+http:
+  middlewares:
+    add-headers:
+      headers:
+        customResponseHeaders:
+          Server: "Traefik"
